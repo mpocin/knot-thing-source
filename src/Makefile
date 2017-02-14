@@ -16,7 +16,7 @@ LDFLAGS := -L$(CPPUTEST_HOME)/lib -lCppUTest
 # A memory leak detection
 MEMFLAGS = -include $(CPPUTEST_HOME)/include/CppUTest/MemoryLeakDetectorMallocMacros.h
 
-FILE = knot_thing_main
+FILE = KNoTThing
 
 # Additional compiled test program
 test: $(FILE)_test.o
