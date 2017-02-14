@@ -16,17 +16,31 @@ LDFLAGS := -L$(CPPUTEST_HOME)/lib -lCppUTest
 # A memory leak detection
 MEMFLAGS = -include $(CPPUTEST_HOME)/include/CppUTest/MemoryLeakDetectorMallocMacros.h
 
-FILE = KNoTThing
+FILE = knot_thing_main
+
+# Compile test program
+#$(FILE): $(FILE).o
+knot_thing_main: knot_thing_main.o
+
+knot_thing_main.o: knot_thing_main.h knot_thing_main.c
+	$(CC) -c -o knot_thing_main.o knot_thing_main.c $(CFLAGS) $(MEMFLAGS)
+
+#$(FILE).o: $(FILE).h $(FILE).c
+#	$(CC) -c -o $(FILE).o $(FILE).c $(CFLAGS) $(MEMFLAGS)
 
 # Additional compiled test program
-test: $(FILE)_test.o
-	$(CPP) -o $@ $(FILE)_test.o $(LDFLAGS)
+#test: $(FILE)_test.o
+#	$(CPP) -o $@ $(FILE)_test.o $(LDFLAGS)
+test: knot_thing_main_test.o
+	$(CPP) -o $@ knot_thing_main_test.o run_all_tests.cpp $(LDFLAGS)
 
-test.o: $(FILE)_test.cpp
-	$(CPP) -c -o $(FILE)_test.o $(FILE)_test.cpp $(CPPFLAGS) $(MEMFLAGS)
+#test.o: $(FILE)_test.cpp
+#	$(CPP) -c -o $(FILE)_test.o $(FILE)_test.cpp $(CPPFLAGS) $(MEMFLAGS)
+test.o: knot_thing_main_test.cpp
+	$(CPP) -c -o knot_thing_main_test.o knot_thing_main_test.cpp $(CPPFLAGS) $(MEMFLAGS)
 
 .PHONY: clean
 clean:
 	@echo "clean..."
 	rm -f test
-	rm -f test.o $(FILE)_test.o
+	rm -f test.o knot_thing_main_test.o

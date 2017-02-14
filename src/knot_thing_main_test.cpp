@@ -1,17 +1,15 @@
 #include <CppUTest/TestHarness.h>
 #include <stdio.h>
-#include "KNoTThing.h"
 
-/*
 extern "C"
 {
-        #include "KNoTThing.h"
-}*/
+        #include "knot_thing_main.h"
+}
 
 /* File to run all tests */
 
-/* The definition of a TEST_GROUP - knotthing */
-TEST_GROUP(knotthing)
+/* The definition of a TEST_GROUP - knot_thing_main */
+TEST_GROUP(knot_thing_main)
 {
     void setup()
     {
@@ -25,7 +23,7 @@ TEST_GROUP(knotthing)
 };
 
 // Initialize thing success
-TEST(knotthing, initialize_thing_success)
+TEST(knot_thing_main, initialize_thing_success)
 {
 	//const char *thing_name = 'KNoTThing';
 	//static uint8_t num_sensors = 2;
