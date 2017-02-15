@@ -12,7 +12,7 @@
 #include <errno.h>
 #include <string.h>
 
-#include "include/time.h"
+#include "time.h"
 #include "knot_thing_config.h"
 #include "knot_types.h"
 #include "knot_thing_main.h"
@@ -468,9 +468,23 @@ static int verify_events(knot_msg_data *data)
 	return 0;
 }
 
-int8_t knot_thing_init(const char *thing_name)
+static uint8_t num_sensors_is_valid(const uint8_t number_sensors)
 {
+	uint8_t min_num_sensor = 1;
+	uint8_t max_num_sensor = 5;
+	return ((number_sensors >= min_num_sensor) &&
+	 (number_sensors <= max_num_sensor));
+}
+
+int8_t knot_thing_init(const char *thing_name, uint8_t number_sensors)
+{
+	if(num_sensors_is_valid(number_sensors) != 0)
+	{
+		return -EINVAL;
+	}
+
 	reset_data_items();
+
 
 	return knot_thing_protocol_init(thing_name, data_item_read,
 				data_item_write, knot_thing_create_schema,

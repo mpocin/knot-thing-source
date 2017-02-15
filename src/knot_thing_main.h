@@ -16,6 +16,8 @@ extern "C" {
 
 #include "knot_thing_protocol.h"
 
+#define NUM_SENSORS	0
+
 typedef int (*intDataFunction)		(int32_t *val, int32_t *multiplier);
 typedef int (*floatDataFunction)	(int32_t *val_int, uint32_t *val_dec, int32_t *multiplier);
 typedef int (*boolDataFunction)		(uint8_t *val);
