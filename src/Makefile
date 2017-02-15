@@ -2,7 +2,7 @@
 #
 # Modules to be tested are located in $(MAIN_SRC)
 
-MAIN_SRC = .
+#MAIN_SRC = .
 
 CPPUTEST_HOME = $(HOME)/Programs/cpputest-3.8
 

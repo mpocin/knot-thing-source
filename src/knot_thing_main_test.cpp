@@ -1,6 +1,7 @@
 extern "C"
 {
         #include "knot_thing_main.h"
+        #include "knot_thing_config.h"
 }
 
 #include "CppUTest/CommandLineTestRunner.h"
@@ -27,12 +28,22 @@ TEST_GROUP(knot_thing_main)
 // Initialize thing success
 TEST(knot_thing_main, initialize_thing_success)
 {
-	//const char *thing_name = '';
-	//static uint8_t num_sensors = 2;
-	UNSIGNED_LONGS_EQUAL(0, knot_thing_init('text', 2));
-        //UNSIGNED_LONGS_EQUAL(0, 22);
-	//FAIL("Fail me!");
+	UNSIGNED_LONGS_EQUAL(0, knot_thing_init(THING_NAME));
 }
+
+// Number of sensors is lesser than 0
+TEST(knot_thing_main, sensor_is_lesser_than_0)
+{
+        
+        UNSIGNED_LONGS_EQUAL(-22, knot_thing_init(THING_NAME));
+}
+/*
+// Number of sensor is greater than 5
+TEST(knot_thing_main, sensor_is_greater_than_5)
+{
+        static uint8_t num_sensors = 6;
+        UNSIGNED_LONGS_EQUAL(-EINVAL, knot_thing_init("", num_sensors));
+}*/
 
 int main(int argc, char* argv[])
 {
@@ -40,9 +51,5 @@ int main(int argc, char* argv[])
 }
 
 // Thing name
-
-// Number of sensors is greater than 1 and less than 5
-
-// Number of sensor is greater than 5
 
 // Number of sensor is negative

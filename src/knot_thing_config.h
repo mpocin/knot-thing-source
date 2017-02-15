@@ -7,5 +7,10 @@
  *
  */
 
-/* Use defined: Thing amount of data source/sinks */
-#define KNOT_THING_DATA_MAX		5
+/*
+ * Configuration file
+ * User should modify the amount of data according your desire
+ * Use defined: Thing amount of data source/sinks
+ */
+#define KNOT_THING_DATA_NUM         4
+#define THING_NAME      "thingname"

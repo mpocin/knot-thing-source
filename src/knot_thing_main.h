@@ -16,8 +16,6 @@ extern "C" {
 
 #include "knot_thing_protocol.h"
 
-#define NUM_SENSORS	0
-
 typedef int (*intDataFunction)		(int32_t *val, int32_t *multiplier);
 typedef int (*floatDataFunction)	(int32_t *val_int, uint32_t *val_dec, int32_t *multiplier);
 typedef int (*boolDataFunction)		(uint8_t *val);
@@ -51,8 +49,7 @@ typedef union __attribute__ ((packed)) {
 } knot_data_functions;
 
 /* KNOT Thing main initialization functions and polling */
-// TODO: add new parameter with numbers of sensors connected
-int8_t	knot_thing_init(const char *thing_name, uint8_t number_sensors);
+int8_t	knot_thing_init(const char *thing_name);
 void	knot_thing_exit(void);
 int8_t	knot_thing_run(void);
 

@@ -21,7 +21,7 @@ KNoTThing::~KNoTThing()
 	knot_thing_exit();
 }
 
-int KNoTThing::init(const char *thing_name, uint8_t num_sensors)
+int KNoTThing::init(const char *thing_name)
 {
 	return knot_thing_init(thing_name);
 }
@@ -80,4 +80,3 @@ void KNoTThing::run()
 {
 	knot_thing_run();
 }
-
