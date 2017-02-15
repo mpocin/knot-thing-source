@@ -40,11 +40,11 @@ test: knot_thing_main_test.o knot_thing_main.o
 
 #test.o: $(FILE)_test.cpp
 #	$(CPP) -c -o $(FILE)_test.o $(FILE)_test.cpp $(CPPFLAGS) $(MEMFLAGS)
-test.o: knot_thing_main_test.cpp run_all_tests.cpp
-	$(CPP) -c -o knot_thing_main_test.o run_all_tests.o knot_thing_main_test.cpp run_all_tests.cpp $(CPPFLAGS) $(MEMFLAGS)
+test.o: knot_thing_main_test.cpp
+	$(CPP) -c -o knot_thing_main_test.o knot_thing_main_test.cpp $(CPPFLAGS) $(MEMFLAGS)
 
 .PHONY: clean
 clean:
 	@echo "clean..."
 	rm -f test
-	rm -f test.o knot_thing_main_test.o run_all_tests.o
+	rm -f test.o knot_thing_main_test.o

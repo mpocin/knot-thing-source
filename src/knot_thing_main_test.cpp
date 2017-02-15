@@ -1,10 +1,12 @@
-#include <CppUTest/TestHarness.h>
-#include <stdio.h>
-
 extern "C"
 {
         #include "knot_thing_main.h"
 }
+
+#include "CppUTest/CommandLineTestRunner.h"
+#include <CppUTest/TestHarness.h>
+#include <stdio.h>
+
 
 /* File to run all tests */
 
@@ -25,10 +27,16 @@ TEST_GROUP(knot_thing_main)
 // Initialize thing success
 TEST(knot_thing_main, initialize_thing_success)
 {
-	//const char *thing_name = 'KNoTThing';
+	//const char *thing_name = '';
 	//static uint8_t num_sensors = 2;
-	//UNSIGNED_LONGS_EQUAL(0, init(*thing_name, num_sensors));
-	FAIL("Fail me!");
+	UNSIGNED_LONGS_EQUAL(0, knot_thing_init('text', 2));
+        //UNSIGNED_LONGS_EQUAL(0, 22);
+	//FAIL("Fail me!");
+}
+
+int main(int argc, char* argv[])
+{
+    return CommandLineTestRunner::RunAllTests(argc, argv);
 }
 
 // Thing name
