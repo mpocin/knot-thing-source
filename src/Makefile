@@ -47,4 +47,4 @@ test.o: knot_thing_main_test.cpp
 clean:
 	@echo "clean..."
 	rm -f test
-	rm -f test.o knot_thing_main_test.o
+	rm -f test.o knot_thing_main_test.o knot_thing_main.o

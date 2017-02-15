@@ -20,8 +20,8 @@
 // TODO: normalize all returning error codes
 
 // #define KNOT_THING_EMPTY_ITEM		"EMPTY ITEM"
-#define MIN_DATA	1
-#define MAX_DATA	5
+#define MIN_DATA				1
+#define MAX_DATA				5
 
 /* Initial number of sensors */
 //uint8_t MAX_NUM_SENSORS = 0;
@@ -53,10 +53,15 @@ typedef struct {
 
 static uint8_t configuration_is_valid(void)
 {
-	if (!((KNOT_THING_DATA_NUM >= MIN_DATA) &&
-	 (KNOT_THING_DATA_NUM <= MAX_DATA)))
+	// Verify number of data is valid
+	if(!((KNOT_THING_DATA_NUM >= MIN_DATA) &&
+		(KNOT_THING_DATA_NUM <= MAX_DATA)))
 		return -EINVAL;
 
+	// Verify name of thing is null
+	if(!(strcmp(THING_NAME, "")))
+		return -EINVAL;
+	
 	return 0;
 }
 
