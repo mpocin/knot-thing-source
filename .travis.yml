@@ -1,0 +1,64 @@
+language: c
+
+env:
+        AVR_VERSION=1.8.1
+        AVR_HOME=$HOME/arduino
+        AVR_KNOTTHING_HOME=$AVR_HOME/libraries/KNoTThing
+        AVR_BOARD=uno
+
+before_install:
+        - "/sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_1.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :1 -ac -screen 0 1280x1024x16"
+        - sleep 3
+        - export DISPLAY=:1.0
+        - wget http://download.arduino.org/IDE/1.8.1/arduino-$AVR_VERSION-linux64.tar.xz
+        - tar xf arduino-$AVR_VERSION-linux64.tar.xz
+        - mv arduino-$AVR_VERSION $HOME/arduino
+        - sudo ln -s $HOME/arduino/arduino /usr/local/bin/arduino
+        - git clone https://github.com/CESARBR/knot-thing-source.git
+        - make && cp -r KNoTThing $HOME/arduino/libraries
+        - wget --output-document="$AVR_HOME/libraries/HX711.zip" https://github.com/bogde/HX711/archive/master.zip && cd $AVR_HOME/libraries/ && unzip HX711.zip
+        - echo 4 | sudo update-alternatives --config java
+
+install:
+#        - arduino --pref "compiler.warning_level=all" --save-prefs
+
+script:
+        # Verify ARDUINO BOARD UNO
+        - echo "Verifying ARDUINO UNO"
+        - arduino --verify --board arduino:avr:$AVR_BOARD $AVR_KNOTTHING_HOME/examples/BeamSensor/BeamSensor.ino
+        - arduino --verify --board arduino:avr:$AVR_BOARD $AVR_KNOTTHING_HOME/examples/Blink_RGB/Blink_RGB.ino
+        - arduino --verify --board arduino:avr:$AVR_BOARD $AVR_KNOTTHING_HOME/examples/Light/Light.ino
+        - arduino --verify --board arduino:avr:$AVR_BOARD $AVR_KNOTTHING_HOME/examples/SpeedSensor/SpeedSensor.ino
+        - arduino --verify --board arduino:avr:$AVR_BOARD $AVR_KNOTTHING_HOME/examples/WaterDispenser/WaterDispenser.ino
+
+        # Verify ARDUINO BOARD MEGA
+        - AVR_BOARD=mega:cpu=atmega2560
+        - echo "Verifying ARDUINO Arduino Mega"
+        - arduino --verify --board arduino:avr:$AVR_BOARD $AVR_KNOTTHING_HOME/examples/BeamSensor/BeamSensor.ino
+        - arduino --verify --board arduino:avr:$AVR_BOARD $AVR_KNOTTHING_HOME/examples/Blink_RGB/Blink_RGB.ino
+        - arduino --verify --board arduino:avr:$AVR_BOARD $AVR_KNOTTHING_HOME/examples/Light/Light.ino
+        - arduino --verify --board arduino:avr:$AVR_BOARD $AVR_KNOTTHING_HOME/examples/SpeedSensor/SpeedSensor.ino
+        - arduino --verify --board arduino:avr:$AVR_BOARD $AVR_KNOTTHING_HOME/examples/WaterDispenser/WaterDispenser.ino
+
+        # Verify ARDUINO BOARD Arduino Pro or Pro Mini
+        - AVR_BOARD=mini:cpu=atmega328
+        - echo "Verifying ARDUINO Arduino Pro or Pro Mini"
+        - arduino --verify --board arduino:avr:$AVR_BOARD $AVR_KNOTTHING_HOME/examples/BeamSensor/BeamSensor.ino
+        - arduino --verify --board arduino:avr:$AVR_BOARD $AVR_KNOTTHING_HOME/examples/Blink_RGB/Blink_RGB.ino
+        - arduino --verify --board arduino:avr:$AVR_BOARD $AVR_KNOTTHING_HOME/examples/Light/Light.ino
+        - arduino --verify --board arduino:avr:$AVR_BOARD $AVR_KNOTTHING_HOME/examples/SpeedSensor/SpeedSensor.ino
+        - arduino --verify --board arduino:avr:$AVR_BOARD $AVR_KNOTTHING_HOME/examples/WaterDispenser/WaterDispenser.ino
+
+        # Verify ARDUINO BOARD NANO
+        - AVR_BOARD=nano:cpu=atmega328
+        - echo "Verifying ARDUINO NANO"
+        - arduino --verify --board arduino:avr:$AVR_BOARD $AVR_KNOTTHING_HOME/examples/BeamSensor/BeamSensor.ino
+        - arduino --verify --board arduino:avr:$AVR_BOARD $AVR_KNOTTHING_HOME/examples/Blink_RGB/Blink_RGB.ino
+        - arduino --verify --board arduino:avr:$AVR_BOARD $AVR_KNOTTHING_HOME/examples/Light/Light.ino
+        - arduino --verify --board arduino:avr:$AVR_BOARD $AVR_KNOTTHING_HOME/examples/SpeedSensor/SpeedSensor.ino
+        - arduino --verify --board arduino:avr:$AVR_BOARD $AVR_KNOTTHING_HOME/examples/WaterDispenser/WaterDispenser.ino
+
+# notifications:
+#         email:
+#                 on_success: change
+#                 on_failure: change

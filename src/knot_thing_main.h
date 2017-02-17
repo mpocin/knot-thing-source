@@ -15,6 +15,7 @@ extern "C" {
 #endif
 
 #include "knot_thing_protocol.h"
+#include "knot_protocol.h"
 
 typedef int (*intDataFunction)		(int32_t *val, int32_t *multiplier);
 typedef int (*floatDataFunction)	(int32_t *val_int, uint32_t *val_dec, int32_t *multiplier);
@@ -62,6 +63,8 @@ int8_t knot_thing_register_raw_data_item(uint8_t sensor_id, const char *name,
 
 int8_t knot_thing_register_data_item(uint8_t sensor_id, const char *name, uint16_t type_id,
 	uint8_t value_type, uint8_t unit, knot_data_functions *func);
+
+int knot_schema_is_valid(uint16_t type_id, uint8_t value_type, uint8_t unit);
 
 #ifdef __cplusplus
 }
