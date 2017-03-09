@@ -13,7 +13,7 @@
 #include <string.h>
 
 #include "include/time.h"
-#include "knot_thing_config.h"
+#include "include/config.h"
 #include "knot_types.h"
 #include "knot_thing_main.h"
 #include <avr/pgmspace.h>
@@ -27,8 +27,8 @@ static uint8_t last_id; /* Last registered id */
 static uint8_t evt_sensor_id;
 
 /* Control the upper lower mensage flow */
-static uint8_t lower_flag[KNOT_THING_DATA_MAX];
-static uint8_t upper_flag[KNOT_THING_DATA_MAX];
+static uint8_t lower_flag[KNOT_THING_NUM_DATA];
+static uint8_t upper_flag[KNOT_THING_NUM_DATA];
 
 
 static struct _data_items{
@@ -46,7 +46,7 @@ static struct _data_items{
 	uint32_t		last_timeout;	// Stores the last time the data was sent
 	// Data read/write functions
 	knot_data_functions	functions;
-} data_items[KNOT_THING_DATA_MAX];
+} data_items[KNOT_THING_NUM_DATA];
 
 static void reset_data_items(void)
 {
@@ -56,7 +56,7 @@ static void reset_data_items(void)
 	last_id = 0;
 	evt_sensor_id = 0;
 
-	for (count = 0; count < KNOT_THING_DATA_MAX; ++count, ++pdata) {
+	for (count = 0; count < KNOT_THING_NUM_DATA; ++count, ++pdata) {
 		pdata->name					= (const char *)pgm_read_word(KNOT_THING_EMPTY_ITEM);
 		pdata->type_id					= KNOT_TYPE_ID_INVALID;
 		pdata->unit					= KNOT_UNIT_NOT_APPLICABLE;
@@ -130,7 +130,7 @@ int8_t knot_thing_register_data_item(uint8_t id, const char *name,
 				uint8_t unit, knot_data_functions *func)
 {
 
-	if (id >= KNOT_THING_DATA_MAX || (item_is_unregistered(id) != 0) ||
+	if (id >= KNOT_THING_NUM_DATA || (item_is_unregistered(id) != 0) ||
 		(knot_schema_is_valid(type_id, value_type, unit) != 0) ||
 		name == NULL || (data_function_is_valid(func) != 0))
 		return -1;
@@ -170,7 +170,7 @@ int knot_thing_config_data_item(uint8_t id, uint8_t evflags, uint16_t time_sec,
 							knot_value_types *upper)
 {
 	/*FIXME: Check if config is valid */
-	if ((id >= KNOT_THING_DATA_MAX) || item_is_unregistered(id) == 0)
+	if ((id >= KNOT_THING_NUM_DATA) || item_is_unregistered(id) == 0)
 		return -1;
 
 	data_items[id].config.event_flags = evflags;
@@ -202,7 +202,7 @@ int knot_thing_create_schema(uint8_t i, knot_msg_schema *msg)
 
 	msg->hdr.type = KNOT_MSG_SCHEMA;
 
-	if ((i >= KNOT_THING_DATA_MAX) || item_is_unregistered(i) == 0)
+	if ((i >= KNOT_THING_NUM_DATA) || item_is_unregistered(i) == 0)
 		return KNOT_INVALID_DEVICE;
 
 	msg->sensor_id = i;
@@ -231,7 +231,7 @@ static int data_item_read(uint8_t id, knot_msg_data *data)
 	int32_t int32_val = 0, multiplier = 0;
 	uint32_t uint32_val = 0;
 
-	if ((id >= KNOT_THING_DATA_MAX) || item_is_unregistered(id) == 0)
+	if ((id >= KNOT_THING_NUM_DATA) || item_is_unregistered(id) == 0)
 		return -1;
 
 	switch (data_items[id].value_type) {
@@ -294,7 +294,7 @@ static int data_item_write(uint8_t id, knot_msg_data *data)
 	int8_t ret_val = -1;
 	uint8_t len;
 
-	if ((id >= KNOT_THING_DATA_MAX) || item_is_unregistered(id) == 0)
+	if ((id >= KNOT_THING_NUM_DATA) || item_is_unregistered(id) == 0)
 		return -1;
 
 	switch (data_items[id].value_type) {
@@ -354,7 +354,7 @@ static int verify_events(knot_msg_data *data)
 	 * changed according to the events registered.
 	 */
 
-	if (evt_sensor_id >= KNOT_THING_DATA_MAX) {
+	if (evt_sensor_id >= KNOT_THING_NUM_DATA) {
 		evt_sensor_id = 0;
 		return -1;
 	} else if (item_is_unregistered(evt_sensor_id) == 0) {
