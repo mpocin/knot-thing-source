@@ -14,12 +14,15 @@
 
 #include "include/time.h"
 #include "include/config.h"
-#include "knot_types.h"
+#include "knot_protocol.h"
 #include "knot_thing_main.h"
+#include "knot_types.h"
 #include <avr/pgmspace.h>
 
 // TODO: normalize all returning error codes
 
+#define MIN_DATA		1
+#define MAX_DATA		5
 
 const char KNOT_THING_EMPTY_ITEM[] PROGMEM = { "EMPTY ITEM" };
 
@@ -47,6 +50,21 @@ static struct _data_items{
 	// Data read/write functions
 	knot_data_functions	functions;
 } data_items[KNOT_THING_NUM_DATA];
+
+/* Verify parameters passed by user on config.h */
+static uint8_t configuration_is_valid(void)
+{
+	// Verify number of data is valid
+	if ((KNOT_THING_NUM_DATA < MIN_DATA) ||
+		(KNOT_THING_NUM_DATA > MAX_DATA))
+		return KNOT_INVALID_CONFIG;
+
+	// Verify name of thing is empty
+	if (!(strcmp(THING_NAME, "")))
+		return KNOT_INVALID_CONFIG;
+
+	return 0;
+}
 
 static void reset_data_items(void)
 {
@@ -473,6 +491,9 @@ static int verify_events(knot_msg_data *data)
 
 int8_t knot_thing_init(const char *thing_name)
 {
+	if (configuration_is_valid() != 0)
+		return KNOT_INVALID_CONFIG;
+
 	reset_data_items();
 
 	return knot_thing_protocol_init(thing_name, data_item_read,
