@@ -73,6 +73,8 @@ endif
 $(KNOT_THING_TARGET):  $(KNOT_PROTOCOL_LIB_DIR)
 	#Creating subdirectories
 	$(MKDIR) -p ./$(KNOT_THING_NAME)/src/include
+	$(MKDIR) -p ./$(KNOT_THING_NAME)/src/aes
+	$(MKDIR) -p ./$(KNOT_THING_NAME)/src/nanoecc
 	$(MKDIR) -p ./$(KNOT_THING_NAME)/examples
 
 	#Filling with configuration files for Arduino IDE
@@ -91,14 +93,25 @@ $(KNOT_THING_TARGET):  $(KNOT_PROTOCOL_LIB_DIR)
 	#Filling hal headers directory
 	$(CP) -r $(KNOT_HAL_HDR_LIB_DIR)/*.h ./$(KNOT_THING_NAME)/src/include
 
+	# Fill aes headers directory
+	$(CP) -r $(KNOT_HAL_SRC_LIB_DIR)/sec/aes/*.h ./$(KNOT_THING_NAME)/src/aes
+
+	# Fill nanoecc files directory
+	$(CP) -r $(KNOT_HAL_SRC_LIB_DIR)/sec/nanoecc/*.h ./$(KNOT_THING_NAME)/src/nanoecc
+	$(CP) -r $(KNOT_HAL_SRC_LIB_DIR)/sec/nanoecc/*.c ./$(KNOT_THING_NAME)/src/nanoecc
+
 	#include folder
 	$(FIND) ./$(KNOT_HAL_SRC_LIB_DIR)/log/ \( ! -name '*linux*' -and -name '*.cpp' \) -exec $(CP) {} ./$(KNOT_THING_NAME)/src \;
 	$(FIND) ./$(KNOT_HAL_SRC_LIB_DIR)/storage/ \( ! -name '*linux*' -and -name '*.cpp' \) -exec $(CP) {} ./$(KNOT_THING_NAME)/src \;
 	$(FIND) ./$(KNOT_HAL_SRC_LIB_DIR)/time/ \( ! -name '*linux*' -and -name '*.cpp' \) -exec $(CP) {} ./$(KNOT_THING_NAME)/src \;
 	$(FIND) ./$(KNOT_HAL_SRC_LIB_DIR)/gpio/ \( ! -name '*linux*' -and -name '*.cpp' \) -exec $(CP) {} ./$(KNOT_THING_NAME)/src \;
+	$(FIND) ./$(KNOT_HAL_SRC_LIB_DIR)/sec/ \( ! -name '*linux*' -and -name '*.cpp' \) -exec $(CP) {} ./$(KNOT_THING_NAME)/src \;
 
 	# Include comm headers and source files
 	$(FIND) ./$(KNOT_HAL_SRC_LIB_DIR)/comm/ \( \( -name '*.c' -or -name '*.h' \) -and ! -name '*serial*' \) -exec $(CP) {} ./$(KNOT_THING_NAME)/src \;
+
+	# Include sec headers and source files
+	$(FIND) ./$(KNOT_HAL_SRC_LIB_DIR)/sec/ \( \( -name '*.c' -or -name '*.h' \) -and ! -name '*aes*' -and ! -name '*ecc*' \) -exec $(CP) {} ./$(KNOT_THING_NAME)/src \;
 
 	# Include nrf24l01 headers and source files
 	$(FIND) ./$(KNOT_HAL_SRC_NRF_LIB_DIR)/ \( \( -name '*.c' -or -name '*.h' \) -and ! -name '*linux*' \) -exec $(CP) {} ./$(KNOT_THING_NAME)/src \;
