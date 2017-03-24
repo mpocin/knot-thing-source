@@ -24,7 +24,7 @@ public:
 	 * Additionally it requests registration to the cloud (if necessary).
 	 * eg protocol: 'TTY', 'NRF24L01'
 	 */
-	int init(const char *thing_name);
+	int init(void);
 
 	int registerIntData(const char *name, uint8_t sensor_id,
 			uint16_t type_id, uint8_t unit,

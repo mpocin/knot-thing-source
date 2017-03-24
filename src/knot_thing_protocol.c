@@ -40,7 +40,7 @@
 /* Led used to show status on thing */
 #define PIN_LED_STATUS			4
 #define LONG_INTERVAL			2500
-#define SHORT_INTERVAL			150
+#define SHORT_INTERVAL			250
 
 /* KNoT MTU */
 #define MTU 256

@@ -13,6 +13,7 @@
 #include <string.h>
 
 #include "include/time.h"
+#include "include/config.h"
 #include "knot_thing_config.h"
 #include "knot_types.h"
 #include "knot_thing_main.h"
@@ -496,11 +497,11 @@ none:
 	return 0;
 }
 
-int8_t knot_thing_init(const char *thing_name)
+int8_t knot_thing_init(void)
 {
 	reset_data_items();
 
-	return knot_thing_protocol_init(thing_name, data_item_read,
+	return knot_thing_protocol_init(THING_NAME, data_item_read,
 				data_item_write, knot_thing_create_schema,
 				knot_thing_config_data_item, verify_events);
 }

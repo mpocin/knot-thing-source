@@ -9,6 +9,7 @@
 
 #include <stdint.h>
 
+#include "include/config.h"
 #include "KNoTThing.h"
 
 KNoTThing::KNoTThing()
@@ -21,9 +22,9 @@ KNoTThing::~KNoTThing()
 	knot_thing_exit();
 }
 
-int KNoTThing::init(const char *thing_name)
+int KNoTThing::init(void)
 {
-	return knot_thing_init(thing_name);
+	return knot_thing_init(void);
 }
 
 int KNoTThing::registerIntData(const char *name, uint8_t sensor_id,
@@ -80,4 +81,3 @@ void KNoTThing::run()
 {
 	knot_thing_run();
 }
-
